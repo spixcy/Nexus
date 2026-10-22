@@ -20,7 +20,7 @@ The Vercel deployment is a visual web preview. Local folder access, microphone r
 ## Current features
 
 - Responsive dashboard with Overview, Projects, Tasks, History and Settings.
-- Native folder picker; the selected project path stays on this device.
+- **Projects → Select a local repository** opens the Windows folder picker in the desktop app. NEXUS keeps the selected path on this device and uses it as the Codex workspace. Browser preview cannot provide a local path or run local Codex.
 - Editable prompt review with the original request shown separately. Nothing starts before **Send to Codex**.
 - Push-to-talk by holding the voice control or `Ctrl+Shift+Space`. The app records in WebView2 and sends the audio to OpenAI's `/v1/audio/transcriptions` endpoint using `gpt-transcribe` after recording stops.
 - The OpenAI API key is stored in Windows Credential Manager. Transcription uses the user's own API billing. Offline speech recognition is not implemented.
