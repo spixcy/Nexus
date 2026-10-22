@@ -2,6 +2,8 @@
 
 NEXUS Voice is a Windows desktop developer workspace built with Tauri 2, React, TypeScript and Rust. Its cinematic background uses the supplied `video_unpack_loop.mov` asset.
 
+**Live web preview:** [nexus-voice-one.vercel.app](https://nexus-voice-one.vercel.app) · [Source repository](https://github.com/spixcy/Nexus)
+
 ## Run
 
 Install Node.js, Rust, the Microsoft C++ build tools and WebView2, then run:
