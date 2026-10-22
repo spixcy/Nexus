@@ -13,6 +13,8 @@ npm run tauri dev
 
 Create a Windows installer with `npm run tauri build`.
 
+The Vercel deployment is a visual web preview. Local folder access, microphone recording, Windows Credential Manager and Codex execution require the Windows desktop app.
+
 ## Current features
 
 - Responsive dashboard with Overview, Projects, Tasks, History and Settings.

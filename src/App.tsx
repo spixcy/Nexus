@@ -27,6 +27,8 @@ const paths: Record<IconName, string> = {
   key: "M21 2l-2 2m-7.6 7.6a5 5 0 1 1-7.07 7.07 5 5 0 0 1 7.07-7.07zM15 8l3 3m-1-5 3 3",
 };
 
+const desktopRuntime = "__TAURI_INTERNALS__" in window;
+
 function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
   return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={paths[name]} /></svg>;
 }
@@ -66,7 +68,7 @@ function App() {
     return () => window.clearTimeout(timer);
   }, [toast]);
 
-  useEffect(() => { void invoke<boolean>("provider_key_saved").then(setApiKeySaved).catch(() => {}); }, []);
+  useEffect(() => { if (desktopRuntime) void invoke<boolean>("provider_key_saved").then(setApiKeySaved).catch(() => {}); }, []);
 
   useEffect(() => {
     const down = (event: KeyboardEvent) => {
@@ -83,6 +85,7 @@ function App() {
   });
 
   useEffect(() => {
+    if (!desktopRuntime) return;
     let mounted = true;
     let stopListening: (() => void)[] = [];
     void Promise.all([
@@ -141,6 +144,7 @@ function App() {
   }
 
   function saveSettings() {
+    if (!desktopRuntime) { setToast("Provider settings are available in the Windows desktop app."); return; }
     void invoke<boolean>("save_provider_key", { apiKey }).then(hasKey => {
       setApiKeySaved(hasKey);
       setApiKey("");
@@ -151,6 +155,7 @@ function App() {
   }
 
   async function pickProject() {
+    if (!desktopRuntime) { setToast("Local folder access is available in the Windows desktop app."); return; }
     try {
       const path = await open({ directory: true, multiple: false, title: "Choose a project repository" });
       if (typeof path !== "string") return;
@@ -164,6 +169,7 @@ function App() {
   }
 
   async function connectCodex() {
+    if (!desktopRuntime) { setToast("Codex sessions are available in the Windows desktop app."); return; }
     if (codexConnected) { setPage("Tasks"); setToast("Codex is already connected and ready for a reviewed prompt."); return; }
     if (!projectPath) { setToast("Select a local project first."); setPage("Projects"); return; }
     setConnecting(true);
@@ -181,6 +187,7 @@ function App() {
   }
 
   async function sendToCodex() {
+    if (!desktopRuntime) { setToast("Codex sessions are available in the Windows desktop app."); return; }
     if (!codexConnected || !threadId) { setToast("Connect Codex before sending this prompt."); return; }
     try {
       const result = await invoke<{ turn?: { id?: string } }>("send_codex_prompt", { threadId, prompt: draft });
@@ -209,6 +216,7 @@ function App() {
   }
 
   async function startRecording() {
+    if (!desktopRuntime) { setToast("Push-to-talk is available in the Windows desktop app."); return; }
     if (recordingRequested.current || recording || transcribing) return;
     if (!apiKeySaved) { setToast("Save an OpenAI API key in Settings to transcribe voice."); setPage("Settings"); return; }
     if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") { setToast("Microphone recording is not supported on this device."); return; }
@@ -289,6 +297,8 @@ function App() {
           <div className="breadcrumbs"><span>Workspace</span><span className="crumb-slash">/</span><strong>{page}</strong></div>
           <div className="topbar-right"><button className={`connection-pill ${codexConnected ? "connected" : ""}`} onClick={() => setPage("Tasks")}><i /> {codexConnected ? "Codex connected" : "Codex not connected"}</button><span className="top-divider" /><span className="clock-label">LOCAL · WINDOWS</span><button className="top-shortcut" onClick={() => setPage("Settings")} aria-label="Open settings"><Icon name="settings" size={17} /></button></div>
         </header>
+
+        {!desktopRuntime && <div className="web-preview-notice">WEB PREVIEW · Local folders, push-to-talk, Windows key storage, and Codex execution are available in the desktop app.</div>}
 
         {page === "Overview" && <section className="overview-page">
           <div className="welcome-row"><div><div className="eyebrow"><span className="eyebrow-line" /> PERSONAL DEVELOPER COMMAND CENTER</div><h1>Good to have you back<span className="cyan-dot">.</span></h1><p>Speak an intention. NEXUS shapes it into work you can review and direct.</p></div><div className="date-chip"><span className="date-icon">✳</span><span>YOUR WORKSPACE<small>LOCAL & PRIVATE</small></span></div></div>
