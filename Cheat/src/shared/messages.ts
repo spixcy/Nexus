@@ -1,12 +1,12 @@
 import type { AIAnswer, AppSettings, PublicSettings, QuestionDraft } from "./types";
 
 interface RequestPayloads {
-  GET_PUBLIC_SETTINGS: Record<string, never>;
+  GET_PUBLIC_SETTINGS: Record<never, never>;
   SAVE_PROVIDER_SETTINGS: Pick<AppSettings, "provider" | "model">;
   SAVE_API_KEY: { apiKey: string };
-  REMOVE_API_KEY: Record<string, never>;
+  REMOVE_API_KEY: Record<never, never>;
   GENERATE_ANSWER: { draft: QuestionDraft };
-  DELETE_ALL_DATA: Record<string, never>;
+  DELETE_ALL_DATA: Record<never, never>;
 }
 
 export type RuntimeRequest = {

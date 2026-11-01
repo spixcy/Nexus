@@ -46,21 +46,25 @@ function isQuestionDraft(value: unknown): value is QuestionDraft {
 export function isRuntimeRequest(value: unknown): value is RuntimeRequest {
   if (typeof value !== "object" || value === null || !("type" in value)) return false;
   const request = value as Record<string, unknown>;
+  const hasOnlyKeys = (...allowed: string[]) => Object.keys(request).every((key) => allowed.includes(key));
   switch (request.type) {
     case "GET_PUBLIC_SETTINGS":
+      return hasOnlyKeys("type");
     case "REMOVE_API_KEY":
+      return hasOnlyKeys("type");
     case "DELETE_ALL_DATA":
-      return true;
+      return hasOnlyKeys("type");
     case "SAVE_PROVIDER_SETTINGS":
       return (
+        hasOnlyKeys("type", "provider", "model") &&
         typeof request.provider === "string" &&
         isProviderReady(request.provider as ProviderId) &&
         typeof request.model === "string"
       );
     case "SAVE_API_KEY":
-      return typeof request.apiKey === "string";
+      return hasOnlyKeys("type", "apiKey") && typeof request.apiKey === "string";
     case "GENERATE_ANSWER":
-      return "draft" in request && isQuestionDraft(request.draft) && validateQuestionDraft(request.draft) === null;
+      return hasOnlyKeys("type", "draft") && "draft" in request && isQuestionDraft(request.draft) && validateQuestionDraft(request.draft) === null;
     default:
       return false;
   }

@@ -29,6 +29,8 @@ describe("extension message boundaries", () => {
   it("accepts OpenAI settings and rejects unimplemented providers", () => {
     expect(isRuntimeRequest({ type: "SAVE_PROVIDER_SETTINGS", provider: "openai", model: "gpt-6-luna" })).toBe(true);
     expect(isRuntimeRequest({ type: "SAVE_PROVIDER_SETTINGS", provider: "gemini", model: "gemini-pro" })).toBe(false);
+    expect(isRuntimeRequest({ type: "GET_PUBLIC_SETTINGS", unexpectedSecret: "ignored" })).toBe(false);
+    expect(isRuntimeRequest({ type: "REMOVE_API_KEY", apiKey: "must-not-be-sent" })).toBe(false);
   });
 
   it("validates question content before accepting generation requests", () => {
