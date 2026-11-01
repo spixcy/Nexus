@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #eff6ff;
+  background: #0b1020;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --ink: #eff6ff;
+  --muted: #98a5ba;
+  --surface: #121a2a;
+  --surface-raised: #182337;
+  --border: rgba(148, 163, 184, 0.14);
+  --cyan: #4de1d2;
+  --violet: #a78bfa;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; background: radial-gradient(ellipse at 75% 4%, #17243c 0%, #0b1020 56%); }
+.popup-body { width: 420px; min-height: 600px; }
+.workspace-body, .options-body { min-height: 100vh; }
+.app-shell { width: 100%; margin: 0 auto; padding: 22px; }
+.app-shell--popup { min-height: 600px; }
+.app-shell--workspace, .app-shell--options { max-width: 1120px; padding: 44px 32px; }
+.brand-row { display: flex; align-items: center; gap: 11px; margin-bottom: 24px; }
+.brand-mark { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 12px; color: #071521; background: linear-gradient(140deg, var(--cyan), #7c9dff 72%, var(--violet)); font-size: 20px; font-weight: 900; }
+.brand-name, .brand-subtitle { margin: 0; }
+.brand-name { font-weight: 760; letter-spacing: -.035em; }
+.brand-subtitle { margin-top: 2px; color: var(--muted); font-size: 11px; }
+.status-pill { display: inline-flex; align-items: center; gap: 7px; margin-left: auto; padding: 7px 10px; border: 1px solid var(--border); border-radius: 999px; color: #c9d5e6; font-size: 10px; }
+.status-pill span { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 10px #4de1d280; }
+.welcome-card { padding: 24px; border: 1px solid var(--border); border-radius: 22px; background: linear-gradient(160deg, rgba(25, 37, 58, .96), rgba(15, 23, 39, .94)); box-shadow: 0 24px 70px #02061740; }
+.eyebrow { margin: 0 0 10px; color: var(--cyan); font-size: 10px; font-weight: 800; letter-spacing: .15em; }
+h1 { max-width: 520px; margin: 0; font-size: clamp(25px, 5vw, 38px); line-height: 1.12; letter-spacing: -.045em; }
+.muted { color: var(--muted); line-height: 1.6; }
+.setup-callout { display: flex; align-items: flex-start; gap: 12px; margin-top: 22px; padding: 15px; border: 1px solid #4de1d233; border-radius: 16px; background: #102a343d; }
+.setup-icon { display: grid; width: 28px; height: 28px; flex: 0 0 auto; place-items: center; border-radius: 9px; color: var(--cyan); background: #4de1d21a; }
+.setup-callout strong { font-size: 13px; }
+.setup-callout p { margin: 5px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.surface-label { margin: 18px 0 0; color: #74839a; font-size: 10px; text-transform: uppercase; letter-spacing: .12em; }
+
+@media (max-width: 520px) {
+  .app-shell--workspace, .app-shell--options { padding: 26px 16px; }
+  .status-pill { font-size: 0; padding: 8px; }
+}
