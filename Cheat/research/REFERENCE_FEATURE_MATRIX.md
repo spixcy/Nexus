@@ -5,7 +5,7 @@
 
 “Observed” describes the public page, store listing, or published policy. It does not mean an authenticated extension runtime was tested.
 
-| Feature | Observed reference behavior | Evidence status | CheatPet implementation target |
+| Feature | Observed reference behavior | Evidence status | CheatPet implementation |
 |---|---|---|---|
 | Public navigation | Home, How It Works, Platforms, App, Pricing, Login, Start, and legal links. | VERIFIED: public page | Independent workspace navigation |
 | Manual question input | No manual extension input form visible in inspected public interface. | UNAVAILABLE | Manual question and options editor |
@@ -31,6 +31,26 @@
 | Privacy architecture | Publisher policy describes backend → model provider → result/history. | VERIFIED as published policy, runtime unverified | Direct user-controlled request to OpenAI; no mandatory backend |
 | Extension manifest/source | Not exposed on public store capture; package not acquired. | UNAVAILABLE | Own Manifest V3 project with minimal permissions |
 
-## Final validation update
+## Implementation and validation status
 
-This section will be updated after implementation and verification. Do not mark a target complete without evidence from the built extension or its tests.
+The implementation below is present in the source and generated Manifest V3 package. Automated verification passed on 2026-11-02. “Implemented” here means code and package checks are complete; no end-to-end interaction was performed in a manually installed Chrome extension.
+
+| Area | CheatPet status |
+|---|---|
+| Manual editor and multiple choice | Implemented. The editor previews A/B/C and numbered choices; parsing and validation are covered by automated tests. |
+| Selected page text | Implemented as an explicit click action using `activeTab` and `scripting`; there is no content script or background page scan. Browser interaction was not manually smoke-tested. |
+| Question images | Implemented as user-selected PNG/JPEG/WebP uploads up to 4 MB. Images can be removed before sending and are not stored in history. No automatic screen capture or region crop is implemented. |
+| Explanations | Implemented through a direct OpenAI Responses API request, with structured reasoning, choice labels, qualitative confidence, and ambiguity notes. API behavior has unit tests with mocked responses. |
+| Providers and credentials | OpenAI is available; other catalog entries remain planned. The API key is stored in extension-local storage, withheld from page contexts, and never returned by the public settings message. |
+| History and saved items | Implemented in local extension storage with a 100-record cap, save/unsave, per-record deletion, and full data clearing. Covered by automated tests. |
+| Privacy and boundaries | Implemented with explicit user-triggered submission, direct provider calls, local history, no analytics, and no automatic answer selection or submission. |
+| Extension package | Built successfully with popup, workspace, options page, module service worker, and icons. `verify:extension` checks the package paths, local assets, Manifest V3 shape, and exact permission allowlists. |
+
+Validation performed:
+
+- `npm run typecheck` — passed.
+- `npm test -- --reporter=dot` — 7 test files and 26 tests passed.
+- `npm run build` — passed and emitted the unpacked extension under `dist/`.
+- `npm run verify:extension` — passed against the generated package.
+
+Limitations: installing the package in Chrome and manually clicking through the UI was not part of this verification. OpenAI requests require the user to configure a working API key and an enabled model.
