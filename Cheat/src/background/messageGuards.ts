@@ -13,7 +13,8 @@ export function isTrustedExtensionPage(sender: MessageSenderDescriptor, extensio
   try {
     const url = new URL(sender.url);
     return (
-      url.origin === `chrome-extension://${extensionId}` &&
+      url.protocol === "chrome-extension:" &&
+      url.host === extensionId &&
       ["/index.html", "/workspace.html", "/options.html"].includes(url.pathname)
     );
   } catch {
