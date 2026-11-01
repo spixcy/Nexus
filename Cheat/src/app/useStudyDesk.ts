@@ -176,6 +176,7 @@ export function useStudyDesk(surface: Surface) {
   }, []);
 
   const openSettings = useCallback(() => setView("settings"), []);
+  const openRecord = useCallback((record: PracticeRecord) => { setActiveRecord(record); setView("practice"); }, []);
   const backToQuestion = useCallback(() => setActiveRecord(undefined), []);
   const startPractice = useCallback(() => { setView("practice"); setActiveRecord(undefined); }, []);
 
@@ -208,6 +209,7 @@ export function useStudyDesk(surface: Surface) {
     removeRecord,
     openWorkspace,
     openSettings,
+    openRecord,
     backToQuestion,
     startPractice,
   };
